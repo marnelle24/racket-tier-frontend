@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useToast } from "@/lib/toast-context";
@@ -43,7 +43,15 @@ type FacilityListItem = {
   active_players: number;
 };
 
-export default function FacilityJoinPage() {
+function FacilityJoinFallback() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-[#fafafa]">
+      <div className="animate-pulse text-zinc-400 text-sm">Loading…</div>
+    </div>
+  );
+}
+
+function FacilityJoinContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialMode = searchParams.get("mode") === "scan" ? "scan" : "code";
@@ -668,5 +676,13 @@ export default function FacilityJoinPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function FacilityJoinPage() {
+  return (
+    <Suspense fallback={<FacilityJoinFallback />}>
+      <FacilityJoinContent />
+    </Suspense>
   );
 }
