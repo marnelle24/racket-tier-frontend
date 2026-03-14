@@ -96,7 +96,7 @@ export function getEcho(token: string | null): Echo<"reverb"> | null {
   window.Pusher = Pusher;
   const resolvedHost = resolveReverbHost();
   const resolvedApiUrl = resolveApiUrl();
-  const authEndpoint = `${resolvedApiUrl}/broadcasting/auth`;
+  const authEndpoint = `${resolvedApiUrl}/api/broadcasting/auth`;
   const authHeaders = {
     Authorization: `Bearer ${token}`,
   };
