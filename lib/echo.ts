@@ -24,6 +24,13 @@ const REVERB_PORT = (() => {
 })();
 const REVERB_SCHEME = process.env.NEXT_PUBLIC_REVERB_SCHEME || "http";
 
+// Temporary debug - remove after fixing
+if (typeof window !== "undefined") {
+  console.log("[Echo] REVERB_APP_KEY present:", !!process.env.NEXT_PUBLIC_REVERB_APP_KEY);
+  console.log("[Echo] REVERB_HOST:", process.env.NEXT_PUBLIC_REVERB_HOST || "(not set)");
+}
+// Temporary debug - remove after fixing
+
 let cachedEcho: Echo<"reverb"> | null = null;
 let cachedToken: string | null = null;
 
