@@ -4,7 +4,7 @@ import { useParams, useRouter, notFound } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, ChartBar, Clock, Dot, Gamepad2, Loader2, Pencil, Plus, RefreshCcw, Search, Trophy, Users, X } from "lucide-react";
+import { ArrowRight, Clock, Dot, Gamepad2, Loader2, Pencil, Plus, RefreshCcw, Search, Trophy, Users, X } from "lucide-react";
 import { UserAvatar } from "@/components/UserAvatar";
 import { getEcho } from "@/lib/echo";
 import { getAuthToken } from "@/lib/auth";
@@ -247,11 +247,7 @@ export default function FacilityGameRoomPage() {
         return;
       }
 
-      // Before getEcho - Temporary debug - remove after fixing
-      console.log("[Echo Debug] token present:", !!token, "userId:", currentUserId);
       const echo = getEcho(token);
-      console.log("[Echo Debug] getEcho returned:", echo ? "Echo instance" : "null");
-     
       if (!echo || cancelled) {
         scheduleRealtimeRetry();
         return;
@@ -260,7 +256,6 @@ export default function FacilityGameRoomPage() {
       const userChannel = `App.Models.User.${authUserId}`;
 
       // Laravel broadcasts event "App.Events.GameInvited" on private channel App.Models.User.{id}
-      console.log("[Echo Debug] Subscribing to private channel:", userChannel);
       echo.private(userChannel)
         .listen(EVENT_GAME_INVITED, (payload: { game?: Game }) => {
           logger.debug("GameInvited received", {
@@ -354,7 +349,6 @@ export default function FacilityGameRoomPage() {
         scheduleRealtimeReconcile();
       };
 
-      console.log("[Echo Debug] Subscribing to private channel:", facilityChannel);
       echo.private(facilityChannel)
         .listen(EVENT_GAME_CREATED, (payload: { game?: Game }) => {
           const raw = payload?.game;

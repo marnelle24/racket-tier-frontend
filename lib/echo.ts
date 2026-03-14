@@ -24,13 +24,6 @@ const REVERB_PORT = (() => {
 })();
 const REVERB_SCHEME = process.env.NEXT_PUBLIC_REVERB_SCHEME || "http";
 
-// Temporary debug - remove after fixing
-if (typeof window !== "undefined") {
-  console.log("[Echo] REVERB_APP_KEY present:", !!process.env.NEXT_PUBLIC_REVERB_APP_KEY);
-  console.log("[Echo] REVERB_HOST:", process.env.NEXT_PUBLIC_REVERB_HOST || "(not set)");
-}
-// Temporary debug - remove after fixing
-
 let cachedEcho: Echo<"reverb"> | null = null;
 let cachedToken: string | null = null;
 
@@ -101,10 +94,6 @@ export function getEcho(token: string | null): Echo<"reverb"> | null {
     Authorization: `Bearer ${token}`,
   };
 
-  // Debug: log connection + auth config (remove after fixing)
-  console.log("[Echo] Auth endpoint:", authEndpoint);
-  console.log("[Echo] Reverb: wsHost=", resolvedHost, "port=", REVERB_PORT, "scheme=", REVERB_SCHEME);
-
   const echo = new Echo<"reverb">({
     broadcaster: "reverb",
     key: REVERB_KEY,
@@ -125,7 +114,6 @@ export function getEcho(token: string | null): Echo<"reverb"> | null {
     } as never,
     authorizer: ((channel: { name: string }) => ({
       authorize: (socketId: string, callback: (error: Error | null, data: Record<string, unknown> | null) => void) => {
-        console.log("[Echo] Authorizer called for channel:", channel.name, "socketId:", socketId);
         void (async () => {
           try {
             const res = await fetch(authEndpoint, {
