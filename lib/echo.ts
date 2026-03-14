@@ -96,9 +96,14 @@ export function getEcho(token: string | null): Echo<"reverb"> | null {
   window.Pusher = Pusher;
   const resolvedHost = resolveReverbHost();
   const resolvedApiUrl = resolveApiUrl();
+  const authEndpoint = `${resolvedApiUrl}/api/broadcasting/auth`;
   const authHeaders = {
     Authorization: `Bearer ${token}`,
   };
+
+  // Debug: log connection + auth config (remove after fixing)
+  console.log("[Echo] Auth endpoint:", authEndpoint);
+  console.log("[Echo] Reverb: wsHost=", resolvedHost, "port=", REVERB_PORT, "scheme=", REVERB_SCHEME);
 
   const echo = new Echo<"reverb">({
     broadcaster: "reverb",
@@ -108,21 +113,22 @@ export function getEcho(token: string | null): Echo<"reverb"> | null {
     wssPort: REVERB_PORT,
     forceTLS: REVERB_SCHEME === "https",
     enabledTransports: ["ws", "wss"],
-    authEndpoint: `${resolvedApiUrl}/api/broadcasting/auth`,
+    authEndpoint,
     auth: {
       headers: authHeaders,
     },
     // Pusher JS v8+ uses channelAuthorization; keep both for compatibility.
     channelAuthorization: {
-      endpoint: `${resolvedApiUrl}/api/broadcasting/auth`,
+      endpoint: authEndpoint,
       transport: "ajax",
       headers: authHeaders,
     } as never,
     authorizer: ((channel: { name: string }) => ({
       authorize: (socketId: string, callback: (error: Error | null, data: Record<string, unknown> | null) => void) => {
+        console.log("[Echo] Authorizer called for channel:", channel.name, "socketId:", socketId);
         void (async () => {
           try {
-            const res = await fetch(`${resolvedApiUrl}/api/broadcasting/auth`, {
+            const res = await fetch(authEndpoint, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
