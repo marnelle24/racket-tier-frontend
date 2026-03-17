@@ -16,8 +16,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "RacketTier",
-  description: "Competitive game room for your facility",
+  title: "RacketTier – Every Smash Counts",
+  description: "RacketTier is a sports performance platform where every match matters. Track your rankings, match history, and detailed stats across the world of racket sports.",
+  icons: {
+    icon: "/images/racketTier-logo-v1.png",
+  },
 };
 
 export default function RootLayout({

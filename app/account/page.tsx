@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getAuthToken } from "@/lib/auth";
+import { clearStoredAuthToken, getAuthToken } from "@/lib/auth";
 import { useToast } from "@/lib/toast-context";
 import { InlineError } from "@/components/InlineError";
 import { RacketTierLogo } from "@/components/RacketTierLogo";
@@ -381,15 +381,15 @@ export default function AccountPage() {
                       "size-10 rounded-full overflow-hidden border-2 transition-all focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:ring-offset-2",
                       AVATAR_SEED_BACKGROUNDS[seed],
                       me?.avatar_seed === seed
-                        ? "border-primary ring-2 ring-primary/30"
+                        ? "border-emerald-500 ring-4 ring-emerald-500/30"
                         : "border-zinc-200 hover:border-zinc-300"
                     )}
                   >
                     <Image
-                      src={diceBearUrl(seed, 62)}
+                      src={diceBearUrl(seed, 80)}
                       alt=""
-                      width={62}
-                      height={62}
+                      width={80}
+                      height={80}
                       unoptimized
                       className="w-full h-full object-cover"
                     />
@@ -397,6 +397,24 @@ export default function AccountPage() {
                 ))}
               </div>
             </div>
+
+            {/* add a logout button */}
+            <button
+              type="button"
+              onClick={() => {
+                clearStoredAuthToken();
+                router.push("/login");
+              }}
+              className={cn(
+                "mt-4 w-full rounded-lg drop-shadow-md bg-linear-to-br from-red-600 via-red-500 to-red-600 py-3 px-4 text-sm font-semibold text-white",
+                "hover:bg-red-700 active:bg-red-800",
+                "transition-all duration-300 ease-out hover:scale-[1.02] active:scale-[0.98]",
+                "shadow",
+                "disabled:opacity-50 disabled:pointer-events-none disabled:hover:scale-100"
+              )}
+            >
+              Logout
+            </button>
           </section>
 
           <h2 className="text-lg font-semibold text-zinc-800 mb-2">Personal Info</h2>
@@ -500,10 +518,10 @@ export default function AccountPage() {
               type="submit"
               disabled={isSavingProfile}
               className={cn(
-                "w-full rounded-xl drop-shadow-md bg-linear-to-br from-emerald-500 via-emerald-400 to-emerald-500 py-3 px-4 text-sm font-semibold text-white",
+                "w-full rounded-lg drop-shadow-md bg-linear-to-br from-emerald-500 via-emerald-400 to-emerald-500 py-3 px-4 text-sm font-semibold text-white",
                 "hover:bg-emerald-700 active:bg-emerald-800",
                 "transition-all duration-300 ease-out hover:scale-[1.02] active:scale-[0.98]",
-                "shadow-lg shadow-zinc-900/20 hover:shadow-xl hover:shadow-zinc-900/25",
+                "shadow",
                 "disabled:opacity-50 disabled:pointer-events-none disabled:hover:scale-100"
               )}
             >
@@ -569,10 +587,10 @@ export default function AccountPage() {
               type="submit"
               disabled={isSavingPassword}
               className={cn(
-                "w-full rounded-xl drop-shadow-md bg-linear-to-br from-emerald-500 via-emerald-400 to-emerald-500 py-3 px-4 text-sm font-semibold text-white",
+                "w-full rounded-lg drop-shadow-md bg-linear-to-br from-emerald-500 via-emerald-400 to-emerald-500 py-3 px-4 text-sm font-semibold text-white",
                 "hover:bg-emerald-700 active:bg-emerald-800",
                 "transition-all duration-300 ease-out hover:scale-[1.02] active:scale-[0.98]",
-                "shadow-lg shadow-zinc-900/20 hover:shadow-xl hover:shadow-zinc-900/25",
+                "shadow",
                 "disabled:opacity-50 disabled:pointer-events-none disabled:hover:scale-100"
               )}
             >

@@ -5,12 +5,18 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { ArrowRight, Zap, Trophy, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { getAuthToken } from "@/lib/auth";
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    const t = setTimeout(() => {
+      setMounted(true);
+      setIsAuthenticated(Boolean(getAuthToken()));
+    }, 100);
+    return () => clearTimeout(t);
   }, []);
 
   return (
@@ -163,7 +169,7 @@ export default function Home() {
             </p>
             <div className="flex flex-col gap-3 sm:flex-row sm:justify-center sm:gap-4">
               <Link
-                href="/login"
+                href={isAuthenticated ? "/dashboard" : "/login"}
                 className={cn(
                   "group inline-flex items-center justify-center gap-2 w-full sm:w-auto",
                   "rounded-xl bg-zinc-900 py-3.5 px-6 text-sm font-semibold text-white",
@@ -172,21 +178,23 @@ export default function Home() {
                   "shadow-lg shadow-zinc-900/20 hover:shadow-xl hover:shadow-zinc-900/25"
                 )}
               >
-                Sign in
+                {isAuthenticated ? "Go to Dashboard" : "Sign in"}
                 <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
               </Link>
-              <Link
-                href="/register"
-                className={cn(
-                  "inline-flex items-center justify-center w-full sm:w-auto",
-                  "rounded-xl border-2 border-zinc-200 py-3.5 px-6 text-sm font-semibold text-zinc-900",
-                  "bg-white/80 backdrop-blur-sm",
-                  "hover:border-zinc-300 hover:bg-zinc-50 active:bg-zinc-100",
-                  "transition-all duration-300 ease-out hover:scale-[1.02] active:scale-[0.98]"
-                )}
-              >
-                Create account
-              </Link>
+              {!isAuthenticated && (
+                <Link
+                  href="/register"
+                  className={cn(
+                    "inline-flex items-center justify-center w-full sm:w-auto",
+                    "rounded-xl border-2 border-zinc-200 py-3.5 px-6 text-sm font-semibold text-zinc-900",
+                    "bg-white/80 backdrop-blur-sm",
+                    "hover:border-zinc-300 hover:bg-zinc-50 active:bg-zinc-100",
+                    "transition-all duration-300 ease-out hover:scale-[1.02] active:scale-[0.98]"
+                  )}
+                >
+                  Create account
+                </Link>
+              )}
             </div>
           </div>
         </div>
