@@ -27,7 +27,6 @@ export const metadata: Metadata = {
     statusBarStyle: "black-translucent",
     title: "RacketTier",
   },
-  themeColor: "#f4f4f5",
 };
 
 export default function RootLayout({

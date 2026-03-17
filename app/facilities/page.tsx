@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useToast } from "@/lib/toast-context";
 import { InlineError } from "@/components/InlineError";
@@ -11,12 +12,15 @@ import { getAuthToken } from "@/lib/auth";
 import {
   Building2,
   ChevronLeft,
+  ChevronRight,
   Loader2,
   Pencil,
   Plus,
+  QrCode,
   Search,
   Trash2,
   Users,
+  X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -34,6 +38,11 @@ const sharedBackgroundStyle = {
     linear-gradient(90deg, rgba(0,0,0,1) 1px, transparent 1px)
   `,
 };
+
+const QRCodeSVG = dynamic(
+  () => import("qrcode.react").then((mod) => mod.QRCodeSVG),
+  { ssr: false }
+);
 
 const inputClass =
   "w-full rounded-xl border border-zinc-200/80 bg-white/80 px-3.5 py-2.5 text-zinc-900 placeholder-zinc-500 focus:border-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-200/80 disabled:opacity-70 disabled:cursor-not-allowed transition-colors duration-200";
@@ -79,9 +88,10 @@ export default function FacilitiesPage() {
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
-  const [modal, setModal] = useState<"create" | "edit" | "delete" | null>(null);
+  const [modal, setModal] = useState<"create" | "edit" | "delete" | "qr" | null>(null);
   const [editingFacility, setEditingFacility] = useState<FacilityItem | null>(null);
   const [deletingFacility, setDeletingFacility] = useState<FacilityItem | null>(null);
+  const [qrFacility, setQrFacility] = useState<FacilityItem | null>(null);
   const [formData, setFormData] = useState<FormData>(defaultFormData);
   const [formError, setFormError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -183,10 +193,16 @@ export default function FacilitiesPage() {
     setModal("delete");
   }
 
+  function openQrModal(facility: FacilityItem) {
+    setQrFacility(facility);
+    setModal("qr");
+  }
+
   function closeModal() {
     setModal(null);
     setEditingFacility(null);
     setDeletingFacility(null);
+    setQrFacility(null);
     setFormError("");
   }
 
@@ -453,11 +469,24 @@ export default function FacilitiesPage() {
                   className="rounded-2xl border border-zinc-200/80 bg-white/80 backdrop-blur-sm p-4 shadow-sm hover:shadow-md transition-shadow"
                 >
                   <div className="flex items-start justify-between gap-2">
+                    <button
+                      type="button"
+                      onClick={() => openQrModal(facility)}
+                      className="flex flex-col gap-0 items-start justify-center p-1 text-zinc-500 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
+                      aria-label="View QR code"
+                    >
+                      {/* <QrCode className="w-10 h-10" /> */}
+                      <svg className="w-full h-10 text-zinc-500" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier"></g><g id="SVGRepo_tracerCarrier"></g><g id="SVGRepo_iconCarrier"><path d="M3 9h6V3H3zm1-5h4v4H4zm1 1h2v2H5zm10 4h6V3h-6zm1-5h4v4h-4zm1 1h2v2h-2zM3 21h6v-6H3zm1-5h4v4H4zm1 1h2v2H5zm15 2h1v2h-2v-3h1zm0-3h1v1h-1zm0-1v1h-1v-1zm-10 2h1v4h-1v-4zm-4-7v2H4v-1H3v-1h3zm4-3h1v1h-1zm3-3v2h-1V3h2v1zm-3 0h1v1h-1zm10 8h1v2h-2v-1h1zm-1-2v1h-2v2h-2v-1h1v-2h3zm-7 4h-1v-1h-1v-1h2v2zm6 2h1v1h-1zm2-5v1h-1v-1zm-9 3v1h-1v-1zm6 5h1v2h-2v-2zm-3 0h1v1h-1v1h-2v-1h1v-1zm0-1v-1h2v1zm0-5h1v3h-1v1h-1v1h-1v-2h-1v-1h3v-1h-1v-1zm-9 0v1H4v-1zm12 4h-1v-1h1zm1-2h-2v-1h2zM8 10h1v1H8v1h1v2H8v-1H7v1H6v-2h1v-2zm3 0V8h3v3h-2v-1h1V9h-1v1zm0-4h1v1h-1zm-1 4h1v1h-1zm3-3V6h1v1z"></path><path fill="none" d="M0 0h24v24H0z"></path></g></svg>
+                      <p className="text-[0.55rem] text-center">Show QR</p>
+                    </button>
                     <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-semibold text-zinc-900 truncate">
+                      <div className="flex items-center">
+                        <h3 className="font-semibold truncate p-0 m-0">
                           {facility.name}
                         </h3>
+                        <a className="text-zinc-900" href={`/facility/${facility.facility_id}/room`}>
+                          <ChevronRight className="h-4 w-4 ml-2" />
+                        </a>
                         {facility.active_players > 0 && (
                           <span className="inline-flex items-center gap-1 text-xs text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full shrink-0">
                             <Users className="h-3 w-3" />
@@ -466,32 +495,20 @@ export default function FacilitiesPage() {
                         )}
                       </div>
                       {(facility.address || facility.country) && (
-                        <p className="text-sm text-zinc-500 truncate mt-0.5">
+                        <p className="text-xs text-zinc-500 truncate mt-0.5">
                           {[facility.address, facility.country]
                             .filter(Boolean)
                             .join(", ")}
                         </p>
                       )}
-                      {facility.join_token && (
-                        <p className="text-xs text-zinc-400 font-mono mt-1">
-                          Code: {facility.join_token}
-                        </p>
-                      )}
                     </div>
                     <div className="flex items-center gap-1 shrink-0">
-                      <Link
-                        href={`/facility/${facility.facility_id}/room`}
-                        className="p-2 text-zinc-500 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
-                        title="Open facility room"
-                      >
-                        <Building2 className="h-4 w-4" />
-                      </Link>
                       {userEmail === "marnelle24@gmail.com" && (
                         <>
                           <button
                             type="button"
                             onClick={() => openEdit(facility)}
-                            className="p-2 text-zinc-500 hover:text-zinc-700 hover:bg-zinc-100 rounded-lg transition-colors"
+                            className="p-1 text-zinc-500 hover:text-zinc-700 hover:bg-zinc-100 rounded-lg transition-colors"
                             aria-label="Edit facility"
                           >
                             <Pencil className="h-4 w-4" />
@@ -499,7 +516,7 @@ export default function FacilitiesPage() {
                           <button
                             type="button"
                             onClick={() => openDelete(facility)}
-                            className="p-2 text-zinc-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                            className="p-1 text-zinc-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                             aria-label="Delete facility"
                           >
                             <Trash2 className="h-4 w-4" />
@@ -571,7 +588,7 @@ export default function FacilitiesPage() {
                 className="p-2 -mr-2 text-zinc-500 hover:text-zinc-700 rounded-lg"
                 aria-label="Close"
               >
-                ×
+                <X className="h-6 w-6" />
               </button>
             </div>
             <div className="p-6 space-y-4">
@@ -664,6 +681,71 @@ export default function FacilitiesPage() {
                   "Save"
                 )}
               </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* QR Code Modal - only render after mount to avoid hydration mismatch with qrcode.react */}
+      {mounted && modal === "qr" && qrFacility && (
+        <div
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="qr-modal-title"
+        >
+          <div
+            className="absolute inset-0 bg-zinc-900/50 backdrop-blur-sm animate-in fade-in animation-duration-200"
+            onClick={closeModal}
+            aria-hidden
+          />
+          <div className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-t-2xl sm:rounded-2xl border border-zinc-200 bg-white shadow-xl mx-auto animate-in slide-in-from-bottom fade-in animation-duration-300">
+            <div className="sticky top-0 bg-white border-b border-zinc-200 px-6 py-4 flex items-center justify-between rounded-t-2xl">
+              <h2 id="qr-modal-title" className="text-lg font-semibold text-zinc-900">
+                {qrFacility.name} QR Code
+              </h2>
+              <button
+                type="button"
+                onClick={closeModal}
+                className="p-2 -mr-2 text-zinc-500 hover:text-zinc-700 rounded-lg"
+                aria-label="Close"
+              >
+                <X className="h-6 w-6" />
+
+              </button>
+            </div>
+            <div className="p-6 flex flex-col items-center gap-4">
+              {qrFacility.join_token ? (
+                <div className="flex flex-col items-center gap-3 w-full">
+                  <p className="font-normal text-zinc-900 text-xl">
+                    Scan QR to enter the game room
+                  </p>
+                  <div className="p-2 bg-white rounded-xl border border-zinc-200">
+                    <QRCodeSVG
+                      key={qrFacility.facility_id}
+                      value={`${typeof window !== "undefined" ? window.location.origin : ""}/facility/join?token=${encodeURIComponent(qrFacility.join_token)}`}
+                      size={300}
+                      level="M"
+                    />
+                  </div>
+                  <div className="text-center space-y-1 w-full">
+                    <p className="text-xl text-zinc-500 font-mono italic">
+                      {qrFacility.join_token}
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="py-8 text-center space-y-3">
+                  <QrCode className="w-16 h-16 text-zinc-300 mx-auto" />
+                  <div>
+                    <p className="font-semibold text-zinc-900">{qrFacility.name}</p>
+                    <p className="text-sm text-zinc-500 mt-2">
+                      No join code set. Edit this facility to add a code, then the QR
+                      code will appear here.
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

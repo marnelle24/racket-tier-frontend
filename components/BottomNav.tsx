@@ -64,7 +64,7 @@ export function BottomNav() {
             href === "/"
               ? pathname === "/"
               : href === "/facility/join"
-                ? pathname.startsWith("/facility")
+                ? pathname.startsWith("/facility") || pathname.startsWith("/facilities")
                 : href === "/account"
                   ? pathname.startsWith("/account")
                   : pathname === href || pathname.startsWith(href + "/");
@@ -76,7 +76,7 @@ export function BottomNav() {
                 "flex flex-col items-center justify-center gap-0.5 rounded-none px-4 py-4 h-full transition-colors relative",
                 "text-muted-foreground hover:text-foreground",
                 isActive &&
-                  "font-medium bg-gray-300/30 rounded-none after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:block after:h-1 after:w-10 after:rounded-none after:bg-emerald-600 after:content-['']"
+                  "font-medium bg-gray-500/30 rounded-none after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:block after:h-1 after:w-10 after:rounded-none after:bg-emerald-600 after:content-['']"
               )}
               aria-current={isActive ? "page" : undefined}
             >
