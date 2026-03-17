@@ -37,7 +37,9 @@ export function BottomNav() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    setIsLoggedIn(getIsLoggedIn());
+    setTimeout(() => {
+      setIsLoggedIn(getIsLoggedIn());
+    }, 100);
   }, [pathname]);
 
   const navItems = isLoggedIn ? authNavItems : guestNavItems;
@@ -53,10 +55,10 @@ export function BottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80 pb-[env(safe-area-inset-bottom)]"
+      className="min-h-[70px] fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80 pb-[env(safe-area-inset-bottom)]"
       aria-label="Main navigation"
     >
-      <div className="mx-auto flex max-w-md items-center justify-around">
+      <div className="mx-auto flex items-center justify-evenly gap-0">
         {navItems.map(({ href, label, icon: Icon }) => {
           const isActive =
             href === "/"
@@ -71,10 +73,10 @@ export function BottomNav() {
               key={href}
               href={href}
               className={cn(
-                "flex flex-col items-center justify-center gap-0.5 rounded-none px-4 py-2 min-w-[64px] transition-colors relative",
-                "text-muted-foreground hover:text-foreground hover:bg-muted/80 active:bg-muted",
+                "flex flex-col items-center justify-center gap-0.5 rounded-none px-4 py-4 h-full transition-colors relative",
+                "text-muted-foreground hover:text-foreground",
                 isActive &&
-                  "font-medium bg-primary/10 rounded-none text-primary hover:bg-primary/15 hover:text-primary after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:block after:h-0.5 after:w-8 after:rounded-full after:bg-primary after:content-['']"
+                  "font-medium bg-gray-300/30 rounded-none after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:block after:h-1 after:w-10 after:rounded-none after:bg-emerald-600 after:content-['']"
               )}
               aria-current={isActive ? "page" : undefined}
             >
@@ -82,7 +84,7 @@ export function BottomNav() {
                 className={cn("size-5 shrink-0", isActive && "text-primary")}
                 aria-hidden
               />
-              <span className="text-[10px] leading-tight">{label}</span>
+              <span className="text-[10px] leading-tight pb-2">{label}</span>
             </Link>
           );
         })}
