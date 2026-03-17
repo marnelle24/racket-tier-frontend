@@ -21,6 +21,13 @@ export const metadata: Metadata = {
   icons: {
     icon: "/images/racketTier-logo-v1.png",
   },
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "RacketTier",
+  },
+  themeColor: "#f4f4f5",
 };
 
 export default function RootLayout({
