@@ -13,6 +13,7 @@ import {
   Building2,
   ChevronLeft,
   ChevronRight,
+  Copy,
   Loader2,
   Pencil,
   Plus,
@@ -386,11 +387,11 @@ export default function FacilitiesPage() {
           {/* Search + Create */}
           <div
             className={cn(
-              "flex flex-col sm:flex-row gap-3 transition-all duration-700 delay-100",
+              "grid grid-cols-6 items-center gap-2 transition-all duration-700 delay-100",
               mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             )}
           >
-            <div className="relative flex-1">
+            <div className="relative flex-1 col-span-5">
               <Search
                 className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400"
                 aria-hidden
@@ -406,11 +407,10 @@ export default function FacilitiesPage() {
             </div>
             <Button
               onClick={openCreate}
-              disabled={userEmail !== "marnelle24@gmail.com"}
-              className="shrink-0 bg-emerald-600 hover:bg-emerald-700"
+              // disabled={userEmail !== "marnelle24@gmail.com"}
+              className="shrink-0 col-span-1 h-10 rounded-lg border-zinc-200/80 bg-emerald-600 hover:bg-emerald-700 text-white"
             >
               <Plus className="h-4 w-4" />
-              Add Facility
             </Button>
           </div>
 
@@ -513,6 +513,7 @@ export default function FacilitiesPage() {
                           >
                             <Pencil className="h-4 w-4" />
                           </button>
+
                           <button
                             type="button"
                             onClick={() => openDelete(facility)}
@@ -607,7 +608,7 @@ export default function FacilitiesPage() {
                   onChange={(e) =>
                     setFormData((prev) => ({ ...prev, name: e.target.value }))
                   }
-                  placeholder="e.g. Downtown Badminton Court"
+                  placeholder="e.g. City Sports Club"
                   className={inputClass}
                   required
                 />
@@ -615,7 +616,7 @@ export default function FacilitiesPage() {
 
               <div>
                 <label htmlFor="facility-join-token" className="block text-sm font-medium text-zinc-700 mb-1">
-                  Join code (optional)
+                  Custom QR Code (optional)
                 </label>
                 <input
                   id="facility-join-token"
@@ -670,13 +671,13 @@ export default function FacilitiesPage() {
               </Button>
               <Button
                 onClick={modal === "create" ? handleCreate : handleUpdate}
-                disabled={isSubmitting}
-                className="bg-emerald-600 hover:bg-emerald-700"
+                disabled={isSubmitting || userEmail !== "marnelle24@gmail.com"}
+                className="bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
                 ) : modal === "create" ? (
-                  "Create"
+                  "Administrator Only"
                 ) : (
                   "Save"
                 )}
@@ -731,6 +732,15 @@ export default function FacilitiesPage() {
                   <div className="text-center space-y-1 w-full">
                     <p className="text-xl text-zinc-500 font-mono italic">
                       {qrFacility.join_token}
+                      {/* add a copy to clipboard button */}
+                      {/* <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(qrFacility.join_token);
+                        }}
+                        className="text-zinc-500 hover:text-zinc-700"
+                      >
+                        <Copy className="h-4 w-4" />
+                      </button> */}
                     </p>
                   </div>
                 </div>

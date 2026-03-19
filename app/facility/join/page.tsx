@@ -14,6 +14,7 @@ import {
   Building2,
   ChevronRight,
   Keyboard,
+  Plus,
   QrCode,
   Search,
   X,
@@ -523,13 +524,19 @@ function FacilityJoinContent() {
               ) : (
                 <section>
                   <div className="rounded-xl border border-zinc-200/80 bg-white/90 shadow-sm p-4">
-                    <label
-                      htmlFor="facility-search"
-                      className="text-sm font-medium text-zinc-700"
-                    >
-                      Find a facility
-                    </label>
-                    <div className="mt-2 relative">
+                    <div className="flex items-center justify-between mb-2">
+                      <label
+                        htmlFor="facility-search"
+                        className="text-sm font-medium text-zinc-700"
+                      >
+                        Find a facility
+                      </label>
+                      <span className="flex gap-1 items-center text-xs text-emerald-600">
+                        {/* <Plus className="h-4 w-4" /> */}
+                        <Link href="/facilities" className="text-xs flex items-center justify-center hover:text-emerald-700">View All Facilities</Link>  
+                      </span>
+                    </div>
+                    <div className="col-span-4 relative">
                       <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
                       <input
                         id="facility-search"
