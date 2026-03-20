@@ -18,21 +18,26 @@ type ToastState = {
 
 type ToastContextValue = {
   toast: ToastState;
-  showToast: (message: string, type?: ToastType) => void;
+  showToast: (message: string, type?: ToastType, durationMs?: number) => void;
   hideToast: () => void;
 };
 
 const ToastContext = createContext<ToastContextValue | null>(null);
 
-const TOAST_DURATION_MS = 4000;
+const DEFAULT_TOAST_DURATION_MS = 4000;
 
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [toast, setToast] = useState<ToastState>(null);
+  const [duration, setDuration] = useState(DEFAULT_TOAST_DURATION_MS);
 
   const hideToast = useCallback(() => setToast(null), []);
 
+  const [isHiding, setIsHiding] = useState(false);
+
   const showToast = useCallback(
-    (message: string, type: ToastType = "info") => {
+    (message: string, type: ToastType = "info", durationMs?: number) => {
+      setIsHiding(false);
+      setDuration(durationMs ?? DEFAULT_TOAST_DURATION_MS);
       setToast({ message, type });
     },
     []
@@ -40,9 +45,17 @@ export function ToastProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!toast) return;
-    const id = setTimeout(hideToast, TOAST_DURATION_MS);
-    return () => clearTimeout(id);
-  }, [toast, hideToast]);
+    let hideId: ReturnType<typeof setTimeout> | undefined;
+    const id = setTimeout(() => {
+      setIsHiding(true);
+      hideId = setTimeout(hideToast, 200);
+    }, duration);
+    return () => {
+      clearTimeout(id);
+      if (hideId !== undefined) clearTimeout(hideId);
+      setIsHiding(false);
+    };
+  }, [toast, hideToast, duration]);
 
   return (
     <ToastContext.Provider value={{ toast, showToast, hideToast }}>
@@ -51,14 +64,16 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         <div
           role="status"
           aria-live="polite"
-          className="fixed bottom-4 left-4 right-4 z-50 mx-auto max-w-sm rounded-lg border px-3 py-2.5 text-sm shadow-lg sm:left-auto sm:right-4"
+          className={`fixed bottom-4 left-4 right-4 z-50 mx-auto max-w-sm rounded-lg border px-3 py-2.5 text-sm shadow-lg sm:left-auto sm:right-4 transition-opacity duration-200 ${
+            isHiding ? "opacity-0" : "opacity-100"
+          }`}
           style={{
             backgroundColor:
               toast.type === "error"
-                ? "rgb(254 226 226)"
+                ? "rgba(254, 226, 226, 0.8)"
                 : toast.type === "success"
-                  ? "rgb(220 252 231)"
-                  : "rgb(250 250 250)",
+                  ? "rgba(220, 252, 231, 0.8)"
+                  : "rgba(250, 250, 250, 0.8)",
             borderColor:
               toast.type === "error"
                 ? "rgb(248 113 113)"

@@ -15,6 +15,7 @@ import {
   Trophy,
   TrendingDown,
   BarChart2,
+  Loader2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { UserAvatar } from "@/components/UserAvatar";
@@ -194,55 +195,99 @@ export default function DashboardPage() {
             )}
           </nav>
 
-          <header
-            className={cn(
-              "space-y-1 transition-all duration-700 delay-75",
-              mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-            )}
-          >
-            {/* <p className="text-xs font-medium uppercase tracking-wide text-zinc-400">
-              Dashboard
-            </p> */}
-            <span className="text-md font-normal text-zinc-400">Welcome back! </span>
-            <div className="flex items-center gap-2">
-              <UserAvatar
-                name={me?.name || `Player ${me?.user_id}`}
-                avatarSeed={me?.avatar_seed}
-                size={32}
-              />
-              <h1
-                className="text-2xl font-bold text-zinc-900 leading-6"
-              >
-                {me ? `${me.name}` : "Dashboard"}
-              </h1>
-              {me && (
-                <div className="flex items-center gap-1.5 bg-emerald-100/60 border border-emerald-300/60 backdrop-blur-sm rounded-full px-2.5 py-1">
-                  <Trophy className="h-3 w-3 text-emerald-600" aria-hidden />
-                  <span className="text-xs font-medium tracking-widest uppercase text-emerald-900">
-                    Tier {me.tier ?? 0}
-                  </span>
-                </div>
+          {!isLoading && (
+            <header
+              className={cn(
+                "space-y-1 transition-all duration-700 delay-75",
+                mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
               )}
-            </div>
-            <p className="text-sm text-zinc-400 mt-2">
-              {me
-                ? "Join or create a game, invite friends & rank up your tiers."
-                : "You are logged in."}
-            </p>
-          </header>
+            >
+              <span className="text-md font-normal text-zinc-400">Welcome back! </span>
+              <div className="flex items-center gap-2 mt-2 max-w-full justify-between">
+                <div className="flex items-center gap-1">
+                  <UserAvatar
+                    name={me?.name || `Player ${me?.user_id}`}
+                    avatarSeed={me?.avatar_seed}
+                    size={32}
+                  />
+                  <h1
+                    className="text-2xl font-bold text-zinc-900 leading-6 truncate"
+                  >
+                    {me ? `${me.name.length > 15 ? `${me.name.slice(0, 15)}...` : me.name}` : ""}
+                  </h1>
+                </div>
+                {me && (
+                  <div className="flex items-center gap-1.5 bg-emerald-100/60 border border-emerald-300/60 backdrop-blur-sm rounded-full px-2.5 py-1">
+                    <Trophy className="h-3 w-3 text-emerald-600" aria-hidden />
+                    <span className="text-xs font-medium tracking-widest uppercase text-emerald-900">
+                      Tier {me.tier ?? 0}
+                    </span>
+                  </div>
+                )}
+              </div>
+              <p className="text-sm text-zinc-400 mt-2">
+                {me
+                  ? "Join or create a game, invite friends & rank up your tiers."
+                  : "You are logged in."}
+              </p>
+            </header>
+          )}
 
           {isLoading && (
             <div
               className={cn(
-                "rounded-2xl border border-zinc-200/80 bg-white/80 backdrop-blur-sm p-6 shadow-sm transition-all duration-700 delay-100",
+                "space-y-6 transition-all duration-700 delay-100",
                 mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
               )}
             >
-              <div className="flex items-center gap-3">
-                <div className="h-12 w-12 rounded-full bg-zinc-200/80 animate-pulse" />
-                <div className="space-y-2 flex-1">
-                  <div className="h-4 w-32 bg-zinc-200/80 rounded animate-pulse" />
-                  <div className="h-3 w-24 bg-zinc-100 rounded animate-pulse" />
+              {/* Header skeleton */}
+              <span className="text-md font-normal text-zinc-400">Welcome back! </span>
+              <div className="flex items-center gap-3 mt-2">
+                <div className="h-8 w-8 rounded-full bg-zinc-200/80 animate-pulse shrink-0" />
+                <div className="space-y-2 flex-1 min-w-0">
+                  <div className="h-6 w-40 bg-zinc-200/80 rounded-md animate-pulse" />
+                  <div className="h-4 w-64 bg-zinc-100 rounded animate-pulse" />
+                </div>
+                <div className="h-6 w-14 rounded-full bg-zinc-200/80 animate-pulse shrink-0" />
+              </div>
+              {/* Loading spinner + message */}
+              <div className="flex flex-col items-center justify-center gap-4 py-8 rounded-2xl border border-zinc-200/80 bg-white/80 backdrop-blur-sm shadow-sm">
+                <Loader2 className="h-10 w-10 text-zinc-400 animate-spin" aria-hidden />
+                <p className="text-sm text-zinc-500">Loading your dashboard…</p>
+              </div>
+              {/* Stats grid skeleton */}
+              <div className="grid grid-cols-2 gap-3">
+                {[1, 2, 3, 4].map((i) => (
+                  <div
+                    key={i}
+                    className="rounded-2xl border border-zinc-200/80 bg-white/80 backdrop-blur-sm p-4 shadow-sm"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="h-11 w-11 rounded-xl bg-zinc-200/80 animate-pulse shrink-0" />
+                      <div className="space-y-2 flex-1">
+                        <div className="h-7 w-12 bg-zinc-200/80 rounded animate-pulse" />
+                        <div className="h-3 w-20 bg-zinc-100 rounded animate-pulse" />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              {/* Quick actions skeleton */}
+              <div className="space-y-3">
+                <div className="h-4 w-28 bg-zinc-200/80 rounded animate-pulse" />
+                <div className="space-y-3">
+                  {[1, 2, 3].map((i) => (
+                    <div
+                      key={i}
+                      className="flex items-center gap-3 rounded-2xl border border-zinc-200/80 bg-white/80 backdrop-blur-sm p-4"
+                    >
+                      <div className="h-12 w-12 rounded-xl bg-zinc-200/80 animate-pulse shrink-0" />
+                      <div className="space-y-2 flex-1">
+                        <div className="h-4 w-32 bg-zinc-200/80 rounded animate-pulse" />
+                        <div className="h-3 w-24 bg-zinc-100 rounded animate-pulse" />
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -268,9 +313,7 @@ export default function DashboardPage() {
                   mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                 )}
               >
-                <h2 className="text-sm font-semibold text-zinc-700">
-                  Your stats
-                </h2>
+
                 <div className="grid grid-cols-2 gap-3">
                   <div className="rounded-2xl border border-slate-200 bg-gray-50 backdrop-blur-sm p-4 shadow-sm transition-all duration-200 hover:shadow-md hover:scale-[1.01] active:scale-[0.99]">
                     <div className="flex items-center gap-3">
@@ -438,7 +481,7 @@ export default function DashboardPage() {
                 )}
               >
                 <RecentFacilitiesList
-                  title="Recently Checked-In"
+                  title="Recently Checked In"
                   onLoaded={(facilities) => {
                     if (facilities.length > 0) setFirstFacility(facilities[0]);
                     setTotalGamesPlayed(

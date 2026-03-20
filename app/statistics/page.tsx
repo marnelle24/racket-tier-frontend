@@ -11,13 +11,13 @@ import {
   Building2,
   TrendingDown,
   TrendingUp,
-  Percent,
   Users,
   Flame,
   ChevronDown,
   Swords,
   X,
   MapPin,
+  Coins,
 } from "lucide-react";
 import { InlineError } from "@/components/InlineError";
 import { RacketTierLogo } from "@/components/RacketTierLogo";
@@ -172,7 +172,9 @@ export default function StatisticsPage() {
   const [selectedHistoryGame, setSelectedHistoryGame] = useState<HistoryGame | null>(null);
 
   useEffect(() => {
-    setMounted(true);
+    setTimeout(() => {
+      setMounted(true);
+    }, 100);
   }, []);
 
   useEffect(() => {
@@ -291,12 +293,12 @@ export default function StatisticsPage() {
               mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             )}
           >
-            <span className="text-md font-normal text-zinc-400">
-              Your Performance
-            </span>
-            <h1 className="text-2xl font-bold text-zinc-900 leading-6">
+            <h1 className="text-xl font-bold text-zinc-900 leading-6">
               My Statistics
             </h1>
+            <span className="text-sm leading-0 font-normal text-zinc-400">
+              Overall performance across all sports and facilities.
+            </span>
           </header>
 
           {isLoading ? (
@@ -376,10 +378,10 @@ export default function StatisticsPage() {
                     label="Games Played"
                   />
                   <StatCard
-                    icon={<Building2 className="h-7 w-7" />}
-                    iconColor="text-emerald-600"
-                    value={stats.totals.facilities_visited}
-                    label="Courts Checked In"
+                    icon={<Coins className="h-7 w-7 stroke-yellow-500" />}
+                    iconColor="text-violet-600"
+                    value={stats.per_facility.reduce((sum, f) => sum + f.points, 0)}
+                    label="Total Points"
                   />
                   <StatCard
                     icon={<TrendingUp className="h-7 w-7" />}
@@ -396,11 +398,11 @@ export default function StatisticsPage() {
                     variant="danger"
                   />
                   <StatCard
-                    icon={<Percent className="h-7 w-7" />}
-                    iconColor="text-violet-600"
-                    value={`${stats.totals.win_rate}%`}
-                    label="Win Rate"
-                  />
+                    icon={<Building2 className="h-7 w-7" />}
+                    iconColor="text-emerald-600"
+                    value={stats.totals.facilities_visited}
+                    label="Courts"
+                  />   
                   <StatCard
                     icon={<Users className="h-7 w-7" />}
                     iconColor="text-blue-600"
@@ -445,7 +447,7 @@ export default function StatisticsPage() {
                 >
                   <h2 className="text-sm font-semibold text-zinc-700 flex items-center gap-2">
                     <Swords className="h-4 w-4 text-indigo-500" aria-hidden />
-                    By Sport
+                    My Sports
                   </h2>
                   <div className="grid gap-3">
                     {stats.per_sport.map((s) => {
@@ -505,19 +507,22 @@ export default function StatisticsPage() {
                 >
                   <h2 className="text-sm font-semibold text-zinc-700 flex items-center gap-2">
                     <Building2 className="h-4 w-4 text-emerald-500" aria-hidden />
-                    By Facility
+                    My Facilities
                   </h2>
                   <ul className="rounded-2xl border border-zinc-200/80 bg-white/80 backdrop-blur-sm overflow-hidden shadow-sm divide-y divide-zinc-100">
                     {stats.per_facility.map((f) => (
                       <li key={f.facility_id} className="px-4 py-3">
                         <div className="flex items-center justify-between">
                           <div className="min-w-0 flex-1">
-                            <p className="font-medium text-zinc-900 text-sm truncate">
-                              {f.facility_name}
+                            <p className="flex items-center gap-1">
+                              <span className="font-medium text-zinc-900 text-sm truncate">{f.facility_name}</span>
+                              <span className="text-xs font-semibold tabular-nums ml-2 bg-yellow-100 border border-yellow-200 text-yellow-700 px-2 py-0.5 rounded-full">
+                                {f.points} pts
+                              </span>
                             </p>
                             <p className="text-xs text-zinc-500 tabular-nums mt-0.5">
                               {f.games_played} game{f.games_played !== 1 ? "s" : ""}{" "}
-                              · W-{f.wins} · L-{f.losses} · {f.points} pts
+                              · W-{f.wins} · L-{f.losses}
                             </p>
                           </div>
                           <div className="shrink-0 text-right ml-3">

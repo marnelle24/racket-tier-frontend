@@ -84,7 +84,9 @@ export function RecentFacilitiesList({
   useEffect(() => {
     const authToken = getAuthToken();
     if (!authToken) {
-      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 100);
       return;
     }
     fetch(`${API_URL}/api/facilities/mine`, {

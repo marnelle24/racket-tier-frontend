@@ -14,7 +14,6 @@ import {
   Building2,
   ChevronRight,
   Keyboard,
-  Plus,
   QrCode,
   Search,
   X,
@@ -376,9 +375,9 @@ function FacilityJoinContent() {
               mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             )}
           >
-            <span className="text-md font-normal text-zinc-400">Facilities</span>
+            {/* <span className="text-md font-normal text-zinc-400">Facilities</span> */}
             <h1 className="text-2xl font-bold text-zinc-900 leading-6">
-              Join a facility
+              Enter a facility
             </h1>
             <p className="text-sm text-zinc-400 mt-2">
               Enter the facility code or scan the QR code at the venue.

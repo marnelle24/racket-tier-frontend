@@ -382,6 +382,10 @@ export default function FacilitiesPage() {
               Create, edit, and delete facilities. Players can join using the
               facility code or QR code.
             </p>
+            <p className="mt-4 text-xs bg-yellow-400/10 border border-yellow-400/70 p-2 rounded-lg text-yellow-600">
+              <strong>Beta Testing:</strong> For now, only administrators can add a facility location due to limited server resources.
+              Please contact the administrator to request a facility location.
+            </p>
           </header>
 
           {/* Search + Create */}
@@ -459,7 +463,7 @@ export default function FacilitiesPage() {
           ) : (
             <div
               className={cn(
-                "space-y-3 transition-all duration-700 delay-100",
+                "space-y-1 transition-all duration-700 delay-100",
                 mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
               )}
             >
@@ -729,18 +733,23 @@ export default function FacilitiesPage() {
                       level="M"
                     />
                   </div>
-                  <div className="text-center space-y-1 w-full">
-                    <p className="text-xl text-zinc-500 font-mono italic">
-                      {qrFacility.join_token}
+                  <div className="text-center space-y-1 w-full flex flex-col items-center">
+                    <p className="text-xl text-zinc-500 font-mono italic text-center">
+                      {qrFacility.join_token.length > 10
+                        ? `${qrFacility.join_token.slice(0, 10)}...`
+                        : qrFacility.join_token}
                       {/* add a copy to clipboard button */}
-                      {/* <button
+                      <button
                         onClick={() => {
-                          navigator.clipboard.writeText(qrFacility.join_token);
+                          if (qrFacility.join_token) {
+                            navigator.clipboard.writeText(qrFacility.join_token);
+                            showToast("Copied", "success", 500);
+                          }
                         }}
                         className="text-zinc-500 hover:text-zinc-700"
                       >
                         <Copy className="h-4 w-4" />
-                      </button> */}
+                      </button>
                     </p>
                   </div>
                 </div>
