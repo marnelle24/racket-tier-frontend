@@ -71,4 +71,5 @@ export function clearStoredAuthToken(): void {
   localStorage.removeItem(AUTH_TOKEN_STORAGE_KEY);
   localStorage.removeItem(AUTH_TOKEN_EXPIRES_AT_STORAGE_KEY);
   clearAuthCookie();
+  window.location.reload();
 }

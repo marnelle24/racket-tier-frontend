@@ -251,7 +251,7 @@ export default function DashboardPage() {
                 <div className="h-6 w-14 rounded-full bg-zinc-200/80 animate-pulse shrink-0" />
               </div>
               {/* Loading spinner + message */}
-              <div className="flex flex-col items-center justify-center gap-4 py-8 rounded-2xl border border-zinc-200/80 bg-white/80 backdrop-blur-sm shadow-sm">
+              <div className="flex flex-col items-center justify-center gap-4 py-8 backdrop-blur-sm">
                 <Loader2 className="h-10 w-10 text-zinc-400 animate-spin" aria-hidden />
                 <p className="text-sm text-zinc-500">Loading your dashboard…</p>
               </div>
