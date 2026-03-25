@@ -17,12 +17,26 @@ const GOOGLE_ICON =
 const APPLE_ICON =
   "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apple/apple-original.svg";
 
-function V2LoginForm() {
+const PRONOUN_OPTIONS = [
+  { value: "", label: "Pronoun" },
+  { value: "He/Him", label: "He" },
+  { value: "She/Her", label: "She" },
+  { value: "They/Them", label: "They" },
+  { value: "Other", label: "Others" },
+] as const;
+
+function V2RegisterForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const returnUrl = searchParams.get("returnUrl") ?? "/dashboard";
+
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [age, setAge] = useState("");
+  const [pronounce, setPronounce] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { showToast } = useToast();
@@ -30,14 +44,37 @@ function V2LoginForm() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (isLoading) return;
+
     setError("");
     setIsLoading(true);
 
     try {
-      const res = await fetch(`${API_URL}/api/login`, {
+      if (password !== passwordConfirmation) {
+        setError("Passwords do not match.");
+        setIsLoading(false);
+        return;
+      }
+
+      const payload: Record<string, string | number | undefined> = {
+        name: name.trim(),
+        email: email.trim(),
+        password,
+      };
+
+      const ageNum =
+        age.trim() !== "" ? Math.trunc(Number.parseInt(age, 10)) : undefined;
+      if (ageNum != null && !Number.isNaN(ageNum) && ageNum >= 1 && ageNum <= 150) {
+        payload.age = ageNum;
+      }
+
+      if (pronounce.trim() !== "") {
+        payload.pronoun = pronounce;
+      }
+
+      const res = await fetch(`${API_URL}/api/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(payload),
       });
 
       const data = await res.json().catch(() => ({}));
@@ -45,8 +82,12 @@ function V2LoginForm() {
       if (!res.ok) {
         const msg =
           data.errors?.email?.[0] ||
+          data.errors?.name?.[0] ||
+          data.errors?.password?.[0] ||
+          data.errors?.age?.[0] ||
+          data.errors?.pronoun?.[0] ||
           data.message ||
-          "Login failed. Please try again.";
+          "Registration failed. Please try again.";
         setError(msg);
         setIsLoading(false);
         return;
@@ -58,13 +99,16 @@ function V2LoginForm() {
         typeof expiresAtRaw === "string"
           ? new Date(expiresAtRaw).getTime()
           : undefined;
+
       if (token) {
         if (typeof window !== "undefined") {
-          storeAuthToken(token, Number.isFinite(expiresAtMs) ? expiresAtMs : undefined);
+          storeAuthToken(
+            token,
+            Number.isFinite(expiresAtMs) ? expiresAtMs : undefined
+          );
         }
-        showToast("Signed in", "success");
-        const target = getSafeRedirect(returnUrl);
-        router.push(target);
+        showToast("Account created", "success");
+        router.push(getSafeRedirect(returnUrl));
         return;
       }
 
@@ -76,10 +120,10 @@ function V2LoginForm() {
     }
   }
 
-  const registerHref =
+  const loginHref =
     returnUrl !== "/dashboard"
-      ? `/v2/register?returnUrl=${encodeURIComponent(returnUrl)}`
-      : "/v2/register";
+      ? `/v2/login?returnUrl=${encodeURIComponent(returnUrl)}`
+      : "/v2/login";
 
   return (
     <div className="mesh-bg flex min-h-[max(884px,100dvh)] flex-col text-[#e4e1e6]">
@@ -87,10 +131,6 @@ function V2LoginForm() {
         <div className="w-full max-w-md space-y-12">
           <div className="space-y-4 text-center">
             <div className="inline-flex items-center justify-center">
-              {/* <span
-                className="material-symbols-outlined text-4xl text-[#c2c1ff]"
-                style={{ fontVariationSettings: "'FILL' 1" }}
-              > */}
               <Image
                 src="/images/rt-logo.png"
                 alt="RacketTier"
@@ -98,11 +138,11 @@ function V2LoginForm() {
                 height={44}
                 className="h-11 w-11"
               />
-              {/* </span> */}
             </div>
             <RacketTierV2Wordmark textSize="text-4xl" />
             <p className="font-medium tracking-tight text-[#c8c5d2]">
-              Enter the kinetic world of racket sports <br />where every smash counts.
+              Enter the kinetic world of racket sports <br />
+              where every smash counts.
             </p>
           </div>
 
@@ -110,14 +150,36 @@ function V2LoginForm() {
             <form className="space-y-6" onSubmit={handleSubmit} aria-busy={isLoading}>
               <div className="space-y-2">
                 <label
-                  htmlFor="v2-login-email"
+                  htmlFor="v2-register-name"
+                  className="font-label ml-1 block text-xs uppercase tracking-[0.15em] text-[#c8c5d2]"
+                >
+                  Name
+                </label>
+                <div className="relative">
+                  <input
+                    id="v2-register-name"
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    autoComplete="name"
+                    disabled={isLoading}
+                    placeholder="Your name"
+                    className="w-full rounded-lg border-none bg-[#0e0e11] px-4 py-3.5 text-[#e4e1e6] outline-none transition-all placeholder:text-[#918f9c]/50 focus:bg-[#2a2a2d] focus:ring-1 focus:ring-[#c2c1ff]/20 disabled:opacity-60"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label
+                  htmlFor="v2-register-email"
                   className="font-label ml-1 block text-xs uppercase tracking-[0.15em] text-[#c8c5d2]"
                 >
                   Email Address
                 </label>
                 <div className="relative">
                   <input
-                    id="v2-login-email"
+                    id="v2-register-email"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -130,29 +192,96 @@ function V2LoginForm() {
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <div className="ml-1 flex items-end justify-between">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
                   <label
-                    htmlFor="v2-login-password"
-                    className="font-label text-xs uppercase tracking-[0.15em] text-[#c8c5d2]"
+                    htmlFor="v2-register-age"
+                    className="font-label ml-1 block text-xs uppercase tracking-[0.15em] text-[#c8c5d2]"
                   >
-                    Password
+                    Age
                   </label>
-                  <a
-                    className="font-label text-[10px] uppercase tracking-widest text-[#c2c1ff] transition-opacity hover:opacity-80"
-                    href="#"
-                  >
-                    Forgot?
-                  </a>
+                  <div className="relative">
+                    <input
+                      id="v2-register-age"
+                      type="number"
+                      value={age}
+                      onChange={(e) => setAge(e.target.value)}
+                      autoComplete="off"
+                      disabled={isLoading}
+                      placeholder="Age"
+                      min={1}
+                      max={150}
+                      className="w-full rounded-lg border-none bg-[#0e0e11] px-4 py-3.5 text-[#e4e1e6] outline-none transition-all placeholder:text-[#918f9c]/50 focus:bg-[#2a2a2d] focus:ring-1 focus:ring-[#c2c1ff]/20 disabled:opacity-60"
+                    />
+                  </div>
                 </div>
+
+                <div className="space-y-2">
+                  <label
+                    htmlFor="v2-register-pronounce"
+                    className="font-label ml-1 block text-xs uppercase tracking-[0.15em] text-[#c8c5d2]"
+                  >
+                    Pronounce
+                  </label>
+                  <div className="relative">
+                    <select
+                      id="v2-register-pronounce"
+                      value={pronounce}
+                      onChange={(e) => setPronounce(e.target.value)}
+                      disabled={isLoading}
+                      className="w-full rounded-lg border-none bg-[#0e0e11] px-4 py-3.5 text-[#e4e1e6] outline-none transition-all placeholder:text-[#918f9c]/50 focus:bg-[#2a2a2d] focus:ring-1 focus:ring-[#c2c1ff]/20 disabled:opacity-60"
+                    >
+                      {PRONOUN_OPTIONS.map((opt) => (
+                        <option
+                          key={opt.value || "empty"}
+                          value={opt.value}
+                          className="bg-[#0e0e11] text-[#e4e1e6] text-xs tracking-[0.15em]"
+                        >
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label
+                  htmlFor="v2-register-password"
+                  className="font-label text-xs uppercase tracking-[0.15em] text-[#c8c5d2]"
+                >
+                  Password
+                </label>
                 <div className="relative">
                   <input
-                    id="v2-login-password"
+                    id="v2-register-password"
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    autoComplete="current-password"
+                    autoComplete="new-password"
+                    disabled={isLoading}
+                    placeholder="••••••••"
+                    className="w-full rounded-lg border-none bg-[#0e0e11] px-4 py-3.5 text-[#e4e1e6] outline-none transition-all placeholder:text-[#918f9c]/50 focus:bg-[#2a2a2d] focus:ring-1 focus:ring-[#c2c1ff]/20 disabled:opacity-60"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label
+                  htmlFor="v2-register-password-confirmation"
+                  className="font-label text-xs uppercase tracking-[0.15em] text-[#c8c5d2]"
+                >
+                  Confirm Password
+                </label>
+                <div className="relative">
+                  <input
+                    id="v2-register-password-confirmation"
+                    type="password"
+                    value={passwordConfirmation}
+                    onChange={(e) => setPasswordConfirmation(e.target.value)}
+                    required
+                    autoComplete="new-password"
                     disabled={isLoading}
                     placeholder="••••••••"
                     className="w-full rounded-lg border-none bg-[#0e0e11] px-4 py-3.5 text-[#e4e1e6] outline-none transition-all placeholder:text-[#918f9c]/50 focus:bg-[#2a2a2d] focus:ring-1 focus:ring-[#c2c1ff]/20 disabled:opacity-60"
@@ -172,9 +301,9 @@ function V2LoginForm() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="kinetic-gradient font-headline w-full rounded-xl py-4 font-bold text-[#211e6a] shadow-[0_20px_40px_-10px_rgba(194,193,255,0.2)] transition-all hover:opacity-90 active:scale-[0.98] disabled:opacity-60"
+                className="mt-8 kinetic-gradient font-headline w-full rounded-xl py-4 font-bold text-[#211e6a] shadow-[0_20px_40px_-10px_rgba(194,193,255,0.2)] transition-all hover:opacity-90 active:scale-[0.98] disabled:opacity-60"
               >
-                {isLoading ? "Signing in…" : "Sign In"}
+                {isLoading ? "Creating account…" : "Create Account"}
               </button>
             </form>
 
@@ -188,7 +317,9 @@ function V2LoginForm() {
             </div>
 
             <div>
-              <div className="flex justify-center items-center text-[#918f9c]/70 text-xs mb-2">coming soon...</div>
+              <div className="flex justify-center items-center text-[#918f9c]/70 text-xs mb-2">
+                coming soon...
+              </div>
               <div className="grid grid-cols-2 gap-4">
                 <button
                   type="button"
@@ -201,7 +332,7 @@ function V2LoginForm() {
                     src={GOOGLE_ICON}
                     width={20}
                     height={20}
-                  />``
+                  />
                   <span className="font-label text-xs font-semibold uppercase tracking-wider">
                     Google
                   </span>
@@ -227,12 +358,12 @@ function V2LoginForm() {
           </div>
 
           <p className="text-center text-sm text-[#c8c5d2]">
-            Don&apos;t have an account?{" "}
+            Already have an account?{" "}
             <Link
-              href={registerHref}
+              href={loginHref}
               className="ml-1 font-bold text-[#4ce081] underline-offset-4 hover:underline"
             >
-              Create Account
+              Sign In
             </Link>
           </p>
         </div>
@@ -258,7 +389,7 @@ function V2LoginForm() {
   );
 }
 
-function V2LoginFallback() {
+function V2RegisterFallback() {
   return (
     <div className="mesh-bg flex min-h-[max(884px,100dvh)] flex-col">
       <main className="flex grow items-center justify-center px-6 py-12">
@@ -271,6 +402,11 @@ function V2LoginFallback() {
           <div className="space-y-6 rounded-xl bg-[#1b1b1e] p-8">
             <div className="h-10 rounded-lg bg-[#0e0e11]" />
             <div className="h-10 rounded-lg bg-[#0e0e11]" />
+            <div className="grid grid-cols-2 gap-4">
+              <div className="h-10 rounded-lg bg-[#0e0e11]" />
+              <div className="h-10 rounded-lg bg-[#0e0e11]" />
+            </div>
+            <div className="h-10 rounded-xl bg-[#353438]" />
             <div className="h-12 rounded-xl bg-[#353438]" />
           </div>
         </div>
@@ -279,10 +415,11 @@ function V2LoginFallback() {
   );
 }
 
-export default function V2LoginPage() {
+export default function V2RegisterPage() {
   return (
-    <Suspense fallback={<V2LoginFallback />}>
-      <V2LoginForm />
+    <Suspense fallback={<V2RegisterFallback />}>
+      <V2RegisterForm />
     </Suspense>
   );
 }
+

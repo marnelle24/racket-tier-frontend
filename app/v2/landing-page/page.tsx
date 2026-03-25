@@ -82,7 +82,7 @@ export default function LandingPageV2() {
               <div className="flex items-start gap-4 sm:items-center">
                 <Link
                   className="kinetic-gradient rounded-xl px-8 py-4 font-headline text-lg font-bold text-[#211e6a] shadow-[0_20px_40px_-10px_rgba(194,193,255,0.3)] transition-all duration-200 hover:scale-[1.02] active:scale-95"
-                  href="/register"
+                  href="/v2/register"
                 >
                   Create Account
                 </Link>

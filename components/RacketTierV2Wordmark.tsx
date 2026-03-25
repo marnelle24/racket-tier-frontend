@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 export type RacketTierV2WordmarkProps = {
   /** Tailwind text size class, e.g. `text-4xl`, `text-3xl`, `text-2xl` */
@@ -13,15 +14,17 @@ export function RacketTierV2Wordmark({
   className,
 }: RacketTierV2WordmarkProps) {
   return (
-    <h1
-      className={cn(
-        "font-headline font-extrabold tracking-tighter text-[#c2c1ff]",
-        textSize,
-        className
-      )}
-    >
-      Racket
-      <span className="text-[#c2c1ff] italic">Tier</span>
-    </h1>
+    <Link href="/v2/landing-page">
+      <h1
+        className={cn(
+          "font-headline font-extrabold tracking-tighter text-[#c2c1ff]",
+          textSize,
+          className
+        )}
+      >
+        Racket
+        <span className="text-[#c2c1ff] italic">Tier</span>
+      </h1>
+    </Link>
   );
 }
