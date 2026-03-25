@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 // import { LandingBottomNav } from "@/components/LandingBottomNav";
 import { LandingNavAuthSlot } from "./LandingNavAuthSlot";
+import { RacketTierV2Wordmark } from "@/components/RacketTierV2Wordmark";
 
 const IMG_HERO =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuBuiQvEUbibNDHHCNjwO2e8lIj98smZFwOTDBSkYkg529KVWtzJ6x5O5JN7RdsO0xDxLgfauQ-b09aXrADrpzAxutttjgeCKCRC8hDYT199FRjA6l85ptCneiqqPvvHD712-OCiBrsGeg2sqz00TcJDgwpqmJ0tAXK43bR9pthYw99s6Gnz7KMrblNuo9lj5NHMLw9NCT-aGkuyKFYznl205z0YIrU-mJ23PXiSPwsf0zSNUidVDo59mQI2v93nv0Wy9LFTbvyv6es";
@@ -19,9 +20,10 @@ export default function LandingPageV2() {
       <nav className="fixed top-0 z-50 w-full bg-[#131316]/70 backdrop-blur-xl dark:bg-[#131316]/70">
         <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-6">
           <div className="flex items-center gap-4">
-            <span className="font-headline text-2xl font-extrabold tracking-tighter text-[#c2c1ff]">
+            {/* <span className="font-headline text-2xl font-extrabold tracking-tighter text-[#c2c1ff]">
               Racket<span className="text-[#c2c1ff] italic">Tier</span>
-            </span>
+            </span> */}
+            <RacketTierV2Wordmark textSize="text-3xl" />
           </div>
           <div className="hidden items-center gap-8 md:flex">
             <a
@@ -46,7 +48,7 @@ export default function LandingPageV2() {
           <div className="flex items-center gap-4">
             <Link
               className="font-label hidden px-4 py-2 text-xs font-bold uppercase tracking-widest text-[#e4e1e6] transition-opacity hover:opacity-70 md:block"
-              href="/login"
+              href="/v2/login"
             >
               Sign In
             </Link>
@@ -86,7 +88,7 @@ export default function LandingPageV2() {
                 </Link>
                 <Link
                   className="rounded-xl bg-[#353438] px-8 py-4 font-headline text-lg font-bold text-[#e4e1e6] transition-colors hover:bg-[#39393c]"
-                  href="/login"
+                  href="/v2/login"
                 >
                   Sign In
                 </Link>
@@ -267,8 +269,8 @@ export default function LandingPageV2() {
                 sizes="(max-width: 768px) 100vw, 66vw"
               />
               <div className="absolute inset-0 flex flex-col justify-end bg-linear-to-t from-[#131316] via-transparent to-transparent p-8">
-                <h3 className="font-headline mb-2 text-2xl font-bold text-[#e4e1e6]">
-                  Find other players - Real-time
+                <h3 className="font-headline mb-3 text-[1.8rem] font-bold text-[#e4e1e6]">
+                  Find other players in Real-time
                 </h3>
                 <p className="max-w-sm text-sm text-[#c8c5d2]">
                   Real-time find other players based on skill level, favorite sports, and
@@ -282,7 +284,7 @@ export default function LandingPageV2() {
 
       {/* <LandingBottomNav /> */}
 
-      <footer className="mt-24 border-none px-6 pb-32 text-center md:px-12">
+      <footer className="mt-4 border-none px-6 pb-8 text-center md:px-12">
         <p className="font-label text-[8px] uppercase tracking-[0.2em] text-[#918f9c]">
           RacketTier © 2026 | All rights reserved
         </p>

@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
-import "./landing-v2.css";
+import "../landing-page/landing-v2.css";
 
 export const metadata: Metadata = {
-  title: "RacketTier | Every Smash Counts",
+  title: {
+    default: "RacketTier",
+    template: "%s | RacketTier",
+  },
 };
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -18,7 +21,7 @@ const inter = Inter({
   variable: "--font-body",
 });
 
-export default function LandingPageV2Layout({
+export default function V2AuthGroupLayout({
   children,
 }: {
   children: React.ReactNode;

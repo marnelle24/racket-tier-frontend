@@ -1,6 +1,5 @@
 "use client";
 
-import { LogIn } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -27,11 +26,11 @@ export function LandingNavAuthSlot({ avatarSrc }: Props) {
   if (!authed) {
     return (
       <Link
-        href="/login"
-        className="flex h-8 w-8 items-center justify-center rounded-full bg-[#353438] text-[#c2c1ff] transition-opacity hover:opacity-80"
-        aria-label="Sign in"
+        href="/v2/login "
+        className="px-3 py-2 text-xs border flex items-center justify-center rounded-full bg-[#353438] text-[#c2c1ff] transition-opacity hover:opacity-80"
+        aria-label="Login or Register"
       >
-        <LogIn className="h-4 w-4" strokeWidth={2.25} />
+        Login or Register
       </Link>
     );
   }
