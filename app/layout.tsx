@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Providers } from "./Providers";
-import { BottomNav } from "@/components/BottomNav";
-import { LayoutContent } from "@/components/LayoutContent";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -50,10 +48,7 @@ export default function RootLayout({
           backgroundSize: "48px 48px, 48px 48px, 100% 100%, 100% 100%, 100% 100%, 100% 100%",
         }}
       >
-        <LayoutContent>
-          <Providers>{children}</Providers>
-        </LayoutContent>
-        <BottomNav />
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
