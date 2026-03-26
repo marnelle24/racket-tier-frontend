@@ -2,8 +2,7 @@ import { ArrowRightIcon, BuildingIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 // import { LandingBottomNav } from "@/components/LandingBottomNav";
-import { LandingNavAuthSlot } from "./LandingNavAuthSlot";
-import { RacketTierV2Wordmark } from "@/components/RacketTierV2Wordmark";
+import { Header } from "@/components/v2/header";
 
 const IMG_HERO =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuBuiQvEUbibNDHHCNjwO2e8lIj98smZFwOTDBSkYkg529KVWtzJ6x5O5JN7RdsO0xDxLgfauQ-b09aXrADrpzAxutttjgeCKCRC8hDYT199FRjA6l85ptCneiqqPvvHD712-OCiBrsGeg2sqz00TcJDgwpqmJ0tAXK43bR9pthYw99s6Gnz7KMrblNuo9lj5NHMLw9NCT-aGkuyKFYznl205z0YIrU-mJ23PXiSPwsf0zSNUidVDo59mQI2v93nv0Wy9LFTbvyv6es";
@@ -17,45 +16,7 @@ const IMG_COURT =
 export default function LandingPageV2() {
   return (
     <>
-      <nav className="fixed top-0 z-50 w-full bg-[#131316]/70 backdrop-blur-xl dark:bg-[#131316]/70">
-        <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-6">
-          <div className="flex items-center gap-4">
-            {/* <span className="font-headline text-2xl font-extrabold tracking-tighter text-[#c2c1ff]">
-              Racket<span className="text-[#c2c1ff] italic">Tier</span>
-            </span> */}
-            <RacketTierV2Wordmark textSize="text-3xl" />
-          </div>
-          <div className="hidden items-center gap-8 md:flex">
-            <a
-              className="font-label text-sm font-medium uppercase tracking-wider text-[#c2c1ff] transition-opacity hover:opacity-80"
-              href="#"
-            >
-              Home
-            </a>
-            <a
-              className="font-label text-sm font-medium uppercase tracking-wider text-[#353438] transition-opacity hover:opacity-80"
-              href="#"
-            >
-              Rankings
-            </a>
-            <a
-              className="font-label text-sm font-medium uppercase tracking-wider text-[#353438] transition-opacity hover:opacity-80"
-              href="#"
-            >
-              Play
-            </a>
-          </div>
-          <div className="flex items-center gap-4">
-            <Link
-              className="font-label hidden px-4 py-2 text-xs font-bold uppercase tracking-widest text-[#e4e1e6] transition-opacity hover:opacity-70 md:block"
-              href="/v2/login"
-            >
-              Sign In
-            </Link>
-            <LandingNavAuthSlot avatarSrc={IMG_AVATAR} />
-          </div>
-        </div>
-      </nav>
+      <Header avatarSrc={IMG_AVATAR} />
 
       <main className="relative min-h-screen overflow-x-hidden pt-16">
         <section className="relative mx-auto max-w-7xl px-6 py-12 md:px-12 md:py-24">

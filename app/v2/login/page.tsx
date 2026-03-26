@@ -172,7 +172,7 @@ function V2LoginForm() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="kinetic-gradient font-headline w-full rounded-xl py-4 font-bold text-[#211e6a] shadow-[0_20px_40px_-10px_rgba(194,193,255,0.2)] transition-all hover:opacity-90 active:scale-[0.98] disabled:opacity-60"
+                className="bg-[#7877C6] kinetic-gradient font-headline w-full rounded-xl py-4 font-bold text-[#211e6a] shadow-[0_20px_40px_-10px_rgba(194,193,255,0.2)] transition-all hover:opacity-90 active:scale-[0.98] disabled:opacity-60"
               >
                 {isLoading ? "Signing in…" : "Sign In"}
               </button>

@@ -9,7 +9,7 @@ export type LandingBottomNavItemProps = {
   active?: boolean;
 };
 
-export function LandingBottomNavItem({
+export function MobileNavItem({
   href,
   label,
   icon: Icon,
