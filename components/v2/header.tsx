@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { RacketTierV2Wordmark } from "@/components/RacketTierV2Wordmark";
+import { RacketTierV2Wordmark } from "@/components/v2/RacketTierV2Wordmark";
 import { UserAvatar } from "@/components/UserAvatar";
 import { getAuthToken } from "@/lib/auth";
 
@@ -58,7 +58,7 @@ export function Header({
           </a>
           <a
             className="font-label text-sm font-medium uppercase tracking-wider text-[#353438] transition-opacity hover:opacity-80"
-            href="#"
+            href="/v2/ranking"
           >
             Rankings
           </a>

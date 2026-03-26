@@ -266,55 +266,6 @@ export default function V2DashboardPage() {
         </section>
       </main>
 
-      {/* <nav className="fixed bottom-0 left-0 z-50 w-full bg-[#131316]/70 backdrop-blur-xl shadow-[0_-4px_40px_-5px_rgba(0,0,0,0.3)]">
-        <div className="fixed bottom-0 left-0 flex w-full items-center justify-around px-4 pb-6 pt-3">
-          <Link
-            className="scale-90 rounded-2xl bg-linear-to-br from-[#c2c1ff] to-[#8a89d9] px-4 py-1.5 text-[#131316] duration-200 active:transition-transform"
-            href="/v2/dashboard"
-          >
-            <span
-              className="material-symbols-outlined"
-              style={{ fontVariationSettings: "'FILL' 1" }}
-            >
-              home
-            </span>
-            <span className="block text-[10px] font-medium uppercase tracking-wider">
-              Home
-            </span>
-          </Link>
-
-          <Link
-            className="scale-90 px-4 py-1.5 text-[#353438] transition-colors duration-200 hover:text-[#c2c1ff] active:transition-transform"
-            href="#"
-          >
-            <span className="material-symbols-outlined">leaderboard</span>
-            <span className="block text-[10px] font-medium uppercase tracking-wider">
-              Rankings
-            </span>
-          </Link>
-
-          <Link
-            className="scale-90 px-4 py-1.5 text-[#353438] transition-colors duration-200 hover:text-[#c2c1ff] active:transition-transform"
-            href="#"
-          >
-            <span className="material-symbols-outlined">sports_tennis</span>
-            <span className="block text-[10px] font-medium uppercase tracking-wider">
-              Play
-            </span>
-          </Link>
-
-          <Link
-            className="scale-90 px-4 py-1.5 text-[#353438] transition-colors duration-200 hover:text-[#c2c1ff] active:transition-transform"
-            href="#"
-          >
-            <span className="material-symbols-outlined">person</span>
-            <span className="block text-[10px] font-medium uppercase tracking-wider">
-              Profile
-            </span>
-          </Link>
-        </div>
-      </nav> */}
-
       <MobileNav />
 
 

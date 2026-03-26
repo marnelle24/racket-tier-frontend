@@ -1,0 +1,54 @@
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap");
+
+.ranking {
+  min-height: max(884px, 100dvh);
+}
+
+.ranking .font-headline {
+  font-family: var(--font-headline), ui-sans-serif, system-ui, sans-serif;
+}
+
+.ranking .font-body {
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+}
+
+.ranking .font-label {
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+}
+
+.kineticHeader {
+  font-family: var(--font-headline), ui-sans-serif, system-ui, sans-serif;
+}
+
+:global(.material-symbols-outlined) {
+  font-family: "Material Symbols Outlined";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
+}
+
+.customScrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.customScrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.customScrollbar::-webkit-scrollbar-thumb {
+  background: #353438;
+  border-radius: 10px;
+}

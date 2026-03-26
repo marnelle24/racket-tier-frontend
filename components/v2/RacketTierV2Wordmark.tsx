@@ -17,7 +17,7 @@ export function RacketTierV2Wordmark({
     <Link href="/v2/landing-page">
       <h1
         className={cn(
-          "font-headline font-extrabold tracking-tighter text-[#c2c1ff]",
+          "font-sans font-extrabold tracking-tighter text-[#c2c1ff]",
           textSize,
           className
         )}

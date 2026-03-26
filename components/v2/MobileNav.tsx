@@ -6,7 +6,7 @@ import { MobileNavItem } from "@/components/v2/MobileNavItem";
 
 const ITEMS = [
   { href: "/v2/dashboard", label: "Home", icon: HomeIcon },
-  { href: "/statistics", label: "Rankings", icon: TrophyIcon },
+  { href: "/v2/ranking", label: "Rankings", icon: TrophyIcon },
   { href: "/facilities", label: "Play", icon: PlayIcon },
   { href: "/account", label: "Profile", icon: UserIcon },
 ] as const;
@@ -14,6 +14,9 @@ const ITEMS = [
 function navItemActive(pathname: string, href: string): boolean {
   if (href === "/v2/dashboard") {
     return pathname === "/v2/dashboard";
+  }
+  if (href === "/v2/ranking") {
+    return pathname === "/v2/ranking";
   }
   return pathname === href || pathname.startsWith(`${href}/`);
 }

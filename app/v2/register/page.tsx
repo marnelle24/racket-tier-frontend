@@ -4,7 +4,7 @@ import { Suspense, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { RacketTierV2Wordmark } from "@/components/RacketTierV2Wordmark";
+import { RacketTierV2Wordmark } from "@/components/v2/RacketTierV2Wordmark";
 import { storeAuthToken } from "@/lib/auth";
 import { getSafeRedirect } from "@/lib/redirect-validation";
 import { useToast } from "@/lib/toast-context";
