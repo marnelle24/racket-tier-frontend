@@ -34,6 +34,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body
         className="min-h-screen text-gray-800 font-sans antialiased relative bg-linear-to-br from-[#131316] to-[#1b1b1e]"
         style={{
