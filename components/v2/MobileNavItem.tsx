@@ -19,10 +19,10 @@ export function MobileNavItem({
     <Link
       href={href}
       className={cn(
-        "font-label flex cursor-pointer flex-col items-center justify-center px-4 py-1.5",
+        "font-label flex cursor-pointer flex-col items-center justify-center px-4 py-3",
         active
-          ? "scale-90 rounded-2xl bg-linear-to-br from-[#c2c1ff] to-[#8a89d9] text-[#131316] duration-200 active:transition-transform"
-          : "text-[#353438] transition-colors hover:text-[#c2c1ff]",
+          ? "scale-90 rounded-none bg-linear-to-br from-[#c2c1ff] to-[#8a89d9] text-[#131316] duration-200 active:transition-transform"
+          : "text-[#8a89d9] transition-colors hover:text-[#c2c1ff]",
       )}
       aria-current={active ? "page" : undefined}
     >

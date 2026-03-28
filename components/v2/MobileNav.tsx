@@ -1,13 +1,13 @@
 "use client";
 
-import { HomeIcon, PlayIcon, TrophyIcon, UserIcon } from "lucide-react";
+import { Building2, HomeIcon, TrophyIcon, UserIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { MobileNavItem } from "@/components/v2/MobileNavItem";
 
 const ITEMS = [
   { href: "/v2/dashboard", label: "Home", icon: HomeIcon },
   { href: "/v2/ranking", label: "Rankings", icon: TrophyIcon },
-  { href: "/facilities", label: "Play", icon: PlayIcon },
+  { href: "/v2/facilities", label: "Facilities", icon: Building2 },
   { href: "/account", label: "Profile", icon: UserIcon },
 ] as const;
 
@@ -29,7 +29,7 @@ export function MobileNav() {
       className="fixed bottom-0 left-0 z-50 w-full md:hidden"
       aria-label="Primary"
     >
-      <div className="flex items-center justify-around bg-[#131316]/70 px-4 pb-6 pt-3 shadow-[0_-4px_40px_-5px_rgba(0,0,0,0.3)] backdrop-blur-xl">
+      <div className="flex items-center justify-around bg-[#131316]/70 shadow-[0_-4px_40px_-5px_rgba(0,0,0,0.3)] backdrop-blur-xl">
         {ITEMS.map((item) => (
           <MobileNavItem
             key={item.href}

@@ -101,11 +101,8 @@ export default function V2RankingPage() {
       <main className="mx-auto max-w-md px-6 pt-20">
         <section className="mb-10 mt-8">
           <div className="flex flex-col gap-1">
-            <span className="font-label text-[10px] font-bold uppercase tracking-[0.2em] text-[#4ce081]">
-              World Circuit
-            </span>
             <h2
-              className={`${styles.kineticHeader} text-5xl font-extrabold tracking-tighter text-[#e4e1e6]`}
+              className={`${styles.kineticHeader} text-4xl font-extrabold tracking-tighter text-[#e4e1e6]`}
             >
               Rankings
             </h2>
